@@ -83,6 +83,12 @@ There is a clear tradeoff between precision and recall. In fraud detection, reca
 
 ---
 
+## Precision-Recall Curve
+
+![Precision-Recall Curve](output.png)
+The precision-recall curve helps evaluate model performance on the minority fraud class, which is more informative than accuracy for this highly imbalanced dataset.
+---
+
 ## Key Learnings
 
 * Accuracy is misleading for imbalanced datasets
