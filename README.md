@@ -4,7 +4,7 @@
 
 This project builds a machine learning model to detect fraudulent credit card transactions using tabular data and scikit-learn.
 
-The goal is to go beyond basic modeling by addressing real-world challenges such as **class imbalance** and **precision-recall tradeoffs**, while building a project that can later integrate with a Personal Finance API.
+The goal is to go beyond basic modeling by addressing real-world challenges such as **class imbalance** and **precision-recall tradeoffs**, rather than relying solely on accuracy.
 
 ---
 
@@ -54,32 +54,36 @@ A naive model can achieve high accuracy by predicting all transactions as non-fr
 * Used predicted probabilities instead of default threshold (0.5)
 * Tested multiple thresholds to balance precision and recall
 
+### 5. Model Comparison
+
+* Compared Logistic Regression and Random Forest
+* Evaluated models using ROC-AUC and classification metrics
+
 ---
 
 ## Results
 
-### Baseline Model
+## Logistic Regression
+  
+  * ROC-AUC: ~0.98
+  * High recall with threshold tuning (~0.92)
+  * Lower precision depending on threshold
 
-* Accuracy: ~99.9%
-* Fraud Recall: ~56%
-* Insight: High accuracy but misses many fraud cases
+## Random Forest
+  
+  * ROC-AUC: ~0.95
+  * Precision: ~0.99 (very few false positives)
+  * Recall: ~0.76
 
-### Balanced Model
+## Threshold Tuning Insights
+  
+  * Lower thresholds → higher recall, lower precision
+  * Higher thresholds → higher precision, lower recall
 
-* Fraud Recall: ~92%
-* Fraud Precision: very low (~6%)
-* Insight: Captures most fraud but produces many false positives
+# Example (Random Forest):
 
-### Threshold Tuning
-
-| Threshold | Precision | Recall |
-| --------- | --------- | ------ |
-| 0.3       | 0.03      | 0.93   |
-| 0.6       | 0.09      | 0.92   |
-| 0.9       | 0.28      | 0.87   |
-
-**Key Insight:**
-There is a clear tradeoff between precision and recall. In fraud detection, recall is prioritized, but extremely low precision can make the system impractical.
+  * Threshold 0.9 → Precision: 1.00, Recall: 0.38
+    * Demonstrates that maximizing precision can severely reduce recall
 
 ---
 
@@ -89,8 +93,11 @@ There is a clear tradeoff between precision and recall. In fraud detection, reca
 
 The precision-recall curve helps evaluate model performance on the minority fraud class, which is more informative than accuracy for this highly imbalanced dataset.
 
-* From the precision-recall curve, an operating point around recall ≈ 0.7–0.75 achieves precision ≈ 0.9.  
-* This represents a strong balance between detecting fraud and minimizing false positives, making it a practical candidate threshold depending on business requirements.
+  * Accuracy is misleading for imbalanced datasets
+  * Precision and recall are more meaningful metrics for fraud detection
+  * Class weighting significantly improves fraud recall
+  * Threshold tuning is critical for controlling model behavior
+  * Model selection depends on business goals (recall vs precision tradeoff)
 
 ---
 
@@ -101,20 +108,13 @@ The precision-recall curve helps evaluate model performance on the minority frau
 * Applied class weighting to improve recall from ~56% → ~92%
 * Tuned classification thresholds to balance precision and recall
 * Demonstrated tradeoffs using precision-recall curve
+
 ---
 
 ## Why This Matters
 
-In real-world fraud detection systems, missing fraudulent transactions is significantly more costly than false positives. This project demonstrates how model evaluation and threshold tuning must align with business objectives rather than relying on accuracy alone.
-
----
-
-## Future Work
-
-* Evaluate model using ROC-AUC
-* Try alternative models (Random Forest, Gradient Boosting)
-* Implement anomaly detection approaches
-* Integrate model with Personal Finance API for real-time fraud flagging
+In real-world fraud detection systems, missing fraudulent transactions is significantly more costly than false positives. 
+This project demonstrates how model evaluation and threshold tuning must align with business objectives rather than relying on accuracy alone.
 
 ---
 
@@ -123,6 +123,7 @@ In real-world fraud detection systems, missing fraudulent transactions is signif
 * Python
 * pandas
 * scikit-learn
+* matplotlib
 * Jupyter Notebook
 
 ---
@@ -138,3 +139,12 @@ fraud-detection-ml/
 ├── README.md
 └── requirements.txt
 ```
+
+---
+
+## Future Work
+
+* Tune Random Forest thresholds for improved recall
+* Explore advanced models (Gradient Boosting, XGBoost)
+* Add feature engineering
+* Integrate model with Personal Finance API for real-time fraud detection
